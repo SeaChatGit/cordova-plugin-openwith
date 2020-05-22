@@ -26,7 +26,7 @@ SOFTWARE.
 <plugin
   xmlns="http://apache.org/cordova/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  id="cordova-plugin-openwith-v2"
+  id="cordova-plugin-openwith"
   version="1.0.0"
 >
   <name>OpenWith</name>
@@ -34,8 +34,8 @@ SOFTWARE.
   <engines>
     <engine name="cordova" version=">=6.0.0" />
   </engines>
-  <repo>https://github.com/aleksey-pyatlin/cordova-plugin-openwith-v2.git</repo>
-  <issue>https://github.com/aleksey-pyatlin/cordova-plugin-openwith-v2/issues</issue>
+  <repo>https://github.com/aleksey-pyatlin/cordova-plugin-openwith.git</repo>
+  <issue>https://github.com/aleksey-pyatlin/cordova-plugin-openwith/issues</issue>
   <license>MIT</license>
   <keywords>cordova,phonegap,openwith,ios,android</keywords>
 
