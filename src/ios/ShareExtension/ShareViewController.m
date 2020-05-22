@@ -16,6 +16,8 @@
 /*
  * Constants
  */
+#define SHAREEXT_GROUP_IDENTIFIER @"group.__BUNDLE_IDENTIFIER__"
+#define SHAREEXT_URL_SCHEME @"__URL_SCHEME__"
 
 #define VERBOSITY_DEBUG  0
 #define VERBOSITY_INFO  10
