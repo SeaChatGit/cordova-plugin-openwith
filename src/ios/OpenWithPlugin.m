@@ -1,10 +1,11 @@
 #import <Cordova/CDV.h>
-#import "ShareViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 /*
  * Constants
  */
+
+#define SHAREEXT_GROUP_IDENTIFIER @"group.__BUNDLE_IDENTIFIER__"
 
 #define VERBOSITY_DEBUG  0
 #define VERBOSITY_INFO  10
