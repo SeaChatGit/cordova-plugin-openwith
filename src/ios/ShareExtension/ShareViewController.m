@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import <Social/Social.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
 @interface ShareViewController : SLComposeServiceViewController <UIAlertViewDelegate> {
