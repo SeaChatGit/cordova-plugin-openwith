@@ -216,6 +216,7 @@ module.exports = function (context) {
                 buildSettingsObj["PROVISIONING_PROFILE"] = PROVISIONING_PROFILE;
               }
               buildSettingsObj["DEVELOPMENT_TEAM"] = DEVELOPMENT_TEAM;
+              buildSettingsObj["PRODUCT_BUNDLE_IDENTIFIER"] = getCordovaParameter(configXml, "SHARE_BUNDLE_IDENTIFIER");
               console.log(
                 `Added signing identities for extension to ${productName}!`
               );
@@ -233,6 +234,10 @@ module.exports = function (context) {
               console.log(
                 "Update CODE_SIGN_STYLE= " +
                   buildSettingsObj["CODE_SIGN_STYLE"]
+              );
+              console.log(
+                "Update PRODUCT_BUNDLE_IDENTIFIER= " +
+                  buildSettingsObj["PRODUCT_BUNDLE_IDENTIFIER"]
               );
             }
           }
