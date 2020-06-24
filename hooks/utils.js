@@ -12,6 +12,10 @@ function getPreferences(context, projectName) {
     key: '__DISPLAY_NAME__',
     value: getCordovaParameter(configXml, 'DISPLAY_NAME') || projectName
   }, {
+    key: '__SHARE_BUNDLE_IDENTIFIER__',
+    value: getCordovaParameter(configXml, '__SHARE_BUNDLE_IDENTIFIER__') || getCordovaParameter(configXml, 'IOS_BUNDLE_IDENTIFIER') + BUNDLE_SUFFIX
+  }
+  , {
     key: '__BUNDLE_IDENTIFIER__',
     value: getCordovaParameter(configXml, 'IOS_BUNDLE_IDENTIFIER') + BUNDLE_SUFFIX
   }, {
