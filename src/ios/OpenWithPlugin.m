@@ -26,12 +26,14 @@ static NSDictionary* launchOptions = nil;
   NSString* _handlerCallback;
   NSUserDefaults *_userDefaults;
   int _verbosityLevel;
+  NSString *_backURL;
 }
 
 @property (nonatomic,retain) NSString* loggerCallback;
 @property (nonatomic,retain) NSString* handlerCallback;
 @property (nonatomic) int verbosityLevel;
 @property (nonatomic,retain) NSUserDefaults *userDefaults;
+@property (nonatomic,retain) NSString *backURL;
 @end
 
 /*
@@ -44,6 +46,7 @@ static NSDictionary* launchOptions = nil;
 @synthesize handlerCallback = _handlerCallback;
 @synthesize verbosityLevel = _verbosityLevel;
 @synthesize userDefaults = _userDefaults;
+@synthesize backURL = _backURL;
 
 //
 // Retrieve launchOptions
@@ -169,6 +172,7 @@ static NSDictionary* launchOptions = nil;
   NSDictionary *dict = (NSDictionary*)object;
   NSString *text = dict[@"text"];
   NSArray *items = dict[@"items"];
+  self.backURL = dict[@"backURL"];
 
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{
     @"text": text,
@@ -187,6 +191,20 @@ static NSDictionary* launchOptions = nil;
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 
   [self checkForFileToShare];
+}
+
+// Exit after sharing
+- (void) exit:(CDVInvokedUrlCommand*)command {
+    [self debug:[NSString stringWithFormat:@"[exit] %@", self.backURL]];
+    if (self.backURL != nil) {
+        UIApplication *app = [UIApplication sharedApplication];
+        NSURL *url = [NSURL URLWithString:self.backURL];
+        if ([app canOpenURL:url]) {
+            [app openURL:url];
+        }
+    }
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 @end
