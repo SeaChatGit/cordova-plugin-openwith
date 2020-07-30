@@ -87,10 +87,21 @@ static NSDictionary* launchOptions = nil;
 
 - (void) pluginInitialize {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onResume) name:UIApplicationWillEnterForegroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onResume)
+      name: @"localStartNewShareSession" object:nil];
+    
+  CFNotificationCenterRef notification = CFNotificationCenterGetDarwinNotifyCenter ();
+  CFNotificationCenterAddObserver(notification, (__bridge const void *)(self), startNewShareSession, CFSTR("startNewShareSession"), NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
 
   [self onReset];
   [self info:@"[pluginInitialize] OK"];
 }
+
+void startNewShareSession(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
+    // trigger local notification
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"localStartNewShareSession" object:nil]];
+}
+
 
 - (void) onReset {
   [self info:@"[onReset]"];
@@ -104,6 +115,11 @@ static NSDictionary* launchOptions = nil;
 - (void) onResume {
   [self debug:@"[onResume]"];
   [self checkForFileToShare];
+}
+
+- (void) onTest {
+  [self debug:@"[onTest]"];
+    [self checkForFileToShare];
 }
 
 - (void) setVerbosity:(CDVInvokedUrlCommand*)command {
@@ -169,10 +185,13 @@ static NSDictionary* launchOptions = nil;
   NSDictionary *dict = (NSDictionary*)object;
   NSString *text = dict[@"text"];
   NSArray *items = dict[@"items"];
+  NSString *unhandledErrorMessage = dict[@"unhandledErrorMessage"];
+
 
   CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{
     @"text": text,
-    @"items": items
+    @"items": items,
+    @"unhandledErrorMessage": unhandledErrorMessage,
   }];
 
   pluginResult.keepCallback = [NSNumber numberWithBool:YES];
