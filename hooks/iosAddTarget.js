@@ -197,6 +197,10 @@ module.exports = function (context) {
       configXml,
       "PROVISIONING_PROFILE"
     );
+    var PROVISIONING_CODE_SIGN_IDENTITY = getCordovaParameter(
+      configXml,
+      "PROVISIONING_CODE_SIGN_IDENTITY"
+    );
     var DEVELOPMENT_TEAM = getCordovaParameter(configXml, "DEVELOPMENT_TEAM");
     console.log(
       "Adding team",
@@ -232,8 +236,15 @@ module.exports = function (context) {
                   buildSettingsObj["CODE_SIGN_IDENTITY"]
               );
               if (!process.env.IS_DEBUG) {
-                buildSettingsObj["CODE_SIGN_IDENTITY"] =
-                  '"iPhone Distribution"';
+                console.log(
+                  "From config.xml PROVISIONING_CODE_SIGN_IDENTITY= " +
+                    PROVISIONING_CODE_SIGN_IDENTITY
+                );
+                buildSettingsObj[
+                  "CODE_SIGN_IDENTITY"
+                ] = PROVISIONING_CODE_SIGN_IDENTITY
+                  ? `"${PROVISIONING_CODE_SIGN_IDENTITY}"`
+                  : '"iPhone Distribution"';
                 buildSettingsObj["CODE_SIGN_STYLE"] = "Manual";
               } else {
                 buildSettingsObj["CODE_SIGN_STYLE"] = "Automatic";
