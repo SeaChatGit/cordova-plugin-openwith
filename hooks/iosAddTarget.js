@@ -212,11 +212,17 @@ module.exports = function (context) {
           if (typeof buildSettingsObj["PRODUCT_NAME"] !== "undefined") {
             var productName = buildSettingsObj["PRODUCT_NAME"];
             if (productName.indexOf("ShareExt") >= 0) {
-              if (PROVISIONING_PROFILE) {
+              if (!process.env.IS_DEBUG) {
                 buildSettingsObj["PROVISIONING_PROFILE"] = PROVISIONING_PROFILE;
               }
               buildSettingsObj["DEVELOPMENT_TEAM"] = DEVELOPMENT_TEAM;
-              buildSettingsObj["PRODUCT_BUNDLE_IDENTIFIER"] = getCordovaParameter(configXml, "SHARE_BUNDLE_IDENTIFIER");
+              console.log(
+                "Update DEVELOPMENT_TEAM= " +
+                  buildSettingsObj["DEVELOPMENT_TEAM"]
+              );
+              buildSettingsObj[
+                "PRODUCT_BUNDLE_IDENTIFIER"
+              ] = getCordovaParameter(configXml, "SHARE_BUNDLE_IDENTIFIER");
               console.log(
                 `Added signing identities for extension to ${productName}!`
               );
@@ -225,19 +231,27 @@ module.exports = function (context) {
                 "Current CODE_SIGN_IDENTITY= " +
                   buildSettingsObj["CODE_SIGN_IDENTITY"]
               );
-              buildSettingsObj["CODE_SIGN_IDENTITY"] = '"iPhone Distribution"';
-              buildSettingsObj["CODE_SIGN_STYLE"] = 'Manual';
+              if (!process.env.IS_DEBUG) {
+                buildSettingsObj["CODE_SIGN_IDENTITY"] =
+                  '"iPhone Distribution"';
+                buildSettingsObj["CODE_SIGN_STYLE"] = "Manual";
+              } else {
+                buildSettingsObj["CODE_SIGN_STYLE"] = "Automatic";
+              }
               console.log(
                 "Update to distribution provision. CODE_SIGN_IDENTITY= " +
                   buildSettingsObj["CODE_SIGN_IDENTITY"]
               );
               console.log(
-                "Update CODE_SIGN_STYLE= " +
-                  buildSettingsObj["CODE_SIGN_STYLE"]
+                "Update CODE_SIGN_STYLE= " + buildSettingsObj["CODE_SIGN_STYLE"]
               );
               console.log(
                 "Update PRODUCT_BUNDLE_IDENTIFIER= " +
                   buildSettingsObj["PRODUCT_BUNDLE_IDENTIFIER"]
+              );
+              console.log(
+                "[ShareExtension] buildSettingsObj is " +
+                  JSON.stringify(buildSettingsObj)
               );
             }
           }
@@ -247,7 +261,9 @@ module.exports = function (context) {
 
     // Write the modified project back to disc
     fs.writeFileSync(pbxProjectPath, pbxProject.writeSync());
-    log("Successfully added ShareExt target to XCode project");
+    log(
+      `Successfully added ShareExt target to XCode project: ${process.env.IS_DEBUG}`
+    );
 
     deferral.resolve();
   });
